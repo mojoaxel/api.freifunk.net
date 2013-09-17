@@ -94,9 +94,9 @@ var FFCommunityMapWidget = function(options, map_options, link) {
           stroke: true,
           weight: 10,
           opacity: 0.3,
-          color: '#009ee0',
+          color: '#dc0067',
           fill: true,
-          fillColor: '#009ee0',
+          fillColor: '#dc0067',
           fillOpacity: 0.7
         });
         return marker;
