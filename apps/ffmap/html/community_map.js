@@ -79,7 +79,11 @@ var FFCommunityMapWidget = function(options, map_options, link) {
   //widget.map.fitBounds(options['fitBounds']);
   widget.map.setView(options['center'],options['zoom']);
 
-  var clusters = L.markerClusterGroup({ spiderfyOnMaxZoom: false, showCoverageOnHover: false, maxClusterRadius: 40 });
+  var clusters = L.markerClusterGroup({ 
+	  spiderfyOnMaxZoom: true, 
+	  showCoverageOnHover: false, 
+	  maxClusterRadius: 30 
+  	});
   widget.map.addLayer(clusters);
 
   $.getJSON(options['geoJSONUrl'], function(geojson) {
