@@ -4,7 +4,7 @@ var FFCommunityMapWidget = function(options, map_options, link) {
       geoJSONUrl: 'http://weimarnetz.de/ffmap/ffMap.json',
       getPopupHTML: function (props) {
         var html = '';
-        //        console.log(props)
+                console.log(props)
         if (props.name) {
           if (props.url && !props.url.match(/^http([s]?):\/\/.*/)) {
             html += '<b><a href=\"http://' + props.url + '\" target=\"_window\">'+ props.name + '</a></b><br/>';
@@ -63,6 +63,7 @@ var FFCommunityMapWidget = function(options, map_options, link) {
       },
       fitBounds: [[46.5, 4.0], [55.5, 15.9]],
       zoom: 5,
+      maxZoom: 10,
       center: [51.5, 10.5],
       tileUrl: 'https://ssl_tiles.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png',
       tileOptions: {
@@ -82,7 +83,7 @@ var FFCommunityMapWidget = function(options, map_options, link) {
   var clusters = L.markerClusterGroup({ 
 	  spiderfyOnMaxZoom: true, 
 	  showCoverageOnHover: false, 
-	  maxClusterRadius: 30 
+	  maxClusterRadius: 0.1 
   	});
   widget.map.addLayer(clusters);
 
@@ -92,17 +93,24 @@ var FFCommunityMapWidget = function(options, map_options, link) {
         layer.bindPopup(options['getPopupHTML'](feature.properties), { minWidth: 210 });
       },
       pointToLayer: function(feature, latlng) {
-        var marker = L.circleMarker(latlng, {
+          var nodeCount = feature.properties.nodes | 1;
+    	  //var radius = nodeCount/10 + 3;
+          //if (radius > 15) radius = 15;
+          var opacity = nodeCount/300 + 0.5;
+          if (opacity > 1) opacity = 0.9;
+          
+          var marker = L.circleMarker(latlng, {
           //title: feature.properties.name,
-          //riseOnHover: true
+          //riseOnHover: true,
           stroke: true,
           weight: 10,
-          opacity: 0.3,
+          opacity: opacity-0.4,
           color: '#dc0067',
           fill: true,
           fillColor: '#dc0067',
-          fillOpacity: 0.7
+          fillOpacity: opacity
         });
+        marker.setRadius(5);
         return marker;
       }
     }).addTo(clusters);
