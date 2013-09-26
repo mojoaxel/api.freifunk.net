@@ -101,11 +101,6 @@ var FFCommunityMapWidget = function(options, map_options, link) {
         return marker;
       }
     }).addTo(clusters);
-<<<<<<< HEAD
-    console.log(geoJsonLayer);
-  });
-
-=======
   });
 
   $('#locationBtn').click(function() {
@@ -124,6 +119,5 @@ var FFCommunityMapWidget = function(options, map_options, link) {
     });
   });
   
->>>>>>> ffmap_getLocation
   return widget;
 }
