@@ -63,13 +63,21 @@ var handleSchema = function()
 	var validate = 
 		function(errors, values) {
 			takeJson();
-			handleSubmit(errors, values);
+			handleSubmit();
 		};
 
 	// ---
 
 	$( '#validateButton').bind( 'click', validate);
 	
+	// ---
+
+	var download = 
+		function() {
+			window.location = "data:application/text,"+ $( '#jsonText' ).val();
+		};
+
+	$( '#downloadButton').bind( 'click', download);
 
 	// ---
 
@@ -82,6 +90,7 @@ var handleSchema = function()
 	        else {
 	            $( '#result .message' ).show().text( 'Hello ' + values.name + '. This is your API file. Place it on a public webserver and add the URL to our directory.' );
 	            $( '#jsonText' ).val( JSON.stringify( values, null, '  ' ) );
+	            $( 'body' ).scrollTop( 0 );
 	        }
 	    };
 
