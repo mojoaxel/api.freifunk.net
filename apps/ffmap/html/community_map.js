@@ -62,6 +62,7 @@ var FFCommunityMapWidget = function(options, map_options, link) {
       },
       fitBounds: [[46.5, 4.0], [55.5, 15.9]],
       zoom: 5,
+      maxZoom: 10,
       center: [51.5, 10.5],
       tileUrl: 'https://ssl_tiles.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png',
       tileOptions: {
@@ -78,7 +79,11 @@ var FFCommunityMapWidget = function(options, map_options, link) {
   //widget.map.fitBounds(options['fitBounds']);
   widget.map.setView(options['center'],options['zoom']);
 
-  var clusters = L.markerClusterGroup({ spiderfyOnMaxZoom: false, showCoverageOnHover: false, maxClusterRadius: 40 });
+  var clusters = L.markerClusterGroup({ 
+	  spiderfyOnMaxZoom: true, 
+	  showCoverageOnHover: false, 
+	  maxClusterRadius: 0.1 
+  	});
   widget.map.addLayer(clusters);
 
   $.getJSON(options['geoJSONUrl'], function(geojson) {
@@ -87,17 +92,24 @@ var FFCommunityMapWidget = function(options, map_options, link) {
         layer.bindPopup(options['getPopupHTML'](feature.properties), { minWidth: 210 });
       },
       pointToLayer: function(feature, latlng) {
-        var marker = L.circleMarker(latlng, {
+          var nodeCount = feature.properties.nodes | 1;
+    	  //var radius = nodeCount/10 + 3;
+          //if (radius > 15) radius = 15;
+          var opacity = nodeCount/300 + 0.5;
+          if (opacity > 1) opacity = 0.9;
+          
+          var marker = L.circleMarker(latlng, {
           //title: feature.properties.name,
-          //riseOnHover: true
+          //riseOnHover: true,
           stroke: true,
           weight: 10,
-          opacity: 0.3,
-          color: '#009ee0',
+          opacity: opacity-0.4,
+          color: '#dc0067',
           fill: true,
-          fillColor: '#009ee0',
-          fillOpacity: 0.7
+          fillColor: '#dc0067',
+          fillOpacity: opacity
         });
+        marker.setRadius(5);
         return marker;
       }
     }).addTo(clusters);
